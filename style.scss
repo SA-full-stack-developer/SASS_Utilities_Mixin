@@ -1,0 +1,243 @@
+/*******************
+ ***** MIXINS  *****
+ *******************/
+
+//Aplica un borde redondeado a un elemento
+@mixin borderRadius($border){
+	border-radius: $border;
+	-webkit-border-radius: $border;
+	-moz-border-radius: $border;
+}
+
+//Aplica una transición a un elemento
+@mixin animTransition($time, $transition){
+	-webkit-transition:all $time $transition;  /* Chrome y Safari */
+	-o-transition:all $time $transition;  /* Opera */
+	-moz-transition:all $time $transition;  /* Mozilla Firefox */
+	-ms-transition:all $time $transition;   /* Internet Explorer */
+	transition:all $time $transition;  /* W3C */
+}
+
+//Aplica transition property a todos los navegadores
+@mixin transProperty(){
+	-webkit-transition-property:-webkit-transform;
+	-moz-transition-property:-moz-transform;
+	-o-transition-property:-o-transform;
+	-ms-transition-property:-ms-transform;
+	transition-property:transform;
+}
+
+//Aplica box sizing a todos los navegadores
+@mixin boxSizing(){
+	-webkit-box-sizing:content-box;
+	-moz-box-sizing:content-box;
+	box-sizing:content-box
+}
+
+//Aplica una sombra
+@mixin cajaSombra($vertical, $horizontal, $color){
+	-webkit-box-shadow: $vertical $horizontal $color;
+	-moz-box-shadow: $vertical $horizontal $color;
+	box-shadow: $vertical $horizontal $color;
+	/* IE 8 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=#{$horizontal}, Direction=135, Color='#{$color}')";
+    /* IE 5.5 - 7 */
+    filter: progid:DXImageTransform.Microsoft.Shadow(Strength=#{$horizontal}, Direction=135, Color='#{$color}');
+}
+
+//Aplica una sombra
+@mixin cajaSombra2($a, $b, $c, $d, $color){
+	-webkit-box-shadow: $a $b $c $d $color;
+	-moz-box-shadow: $a $b $c $d $color;
+	box-shadow: $a $b $c $d $color;
+	/* IE 8 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=#{$b}, Direction=135, Color='#{$color}')";
+    /* IE 5.5 - 7 */
+    filter: progid:DXImageTransform.Microsoft.Shadow(Strength=#{$b}, Direction=135, Color='#{$color}');
+}
+
+//Estilo común para todos los botones
+@mixin classicButtons(){
+	@include borderRadius(5px);
+	text-shadow: -1px -1px 3px #666666;
+	-webkit-box-shadow: 0px 2px 4px #666666;
+	-moz-box-shadow: 0px 2px 4px #666666;
+	box-shadow: 0px 2px 4px #666666;
+	/* IE 8 */
+    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#666666')";
+    /* IE 5.5 - 7 */
+    filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=135, Color='#666666');
+	font-family: Arial;
+	color: #ffffff;
+	font-size: 25px;
+	padding: 10px 40px;
+	text-decoration: none;
+}
+
+@mixin buttons($color, $colorSombra){
+	border: none;
+	@include borderRadius(5px);
+	@include cajaSombra(0px, 10px, $colorSombra);
+	color: #fff;
+	text-decoration: none;
+	display: inline-block;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+	outline: none;
+	background: $color;
+    height: 3em;
+
+	&:hover{
+		@include cajaSombra(0px, 5px, $colorSombra);
+		transform: translateY(4px);
+	}
+}
+
+//Aplica un degradado lineal con dos colores
+@mixin degradadoLinear($backColor1, $backColor2){
+	background: $backColor1;
+	background: {
+		image: -webkit-linear-gradient($backColor1, $backColor2);
+		image: -moz-linear-gradient(top, $backColor1, $backColor2);
+		image: -o-linear-gradient($backColor1, $backColor2);
+		image: linear-gradient($backColor1, $backColor2);
+		image: linear-gradient(to bottom, $backColor1, $backColor2);
+	}
+}
+
+//Aplica estilos a los selectores
+@mixin selectores() {
+	@include borderRadius(5px);
+	padding: 2px 5px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: {
+    	image: url("../img/icons/arrowDown.jpg");
+    	repeat: no-repeat;
+    	position: right;
+    }
+    cursor: pointer;
+}
+
+//Alinea los elementos según se necesite horizontalmente o verticalmente.
+@mixin espacioEntre($justContent:"", $alignItem:"", $flexFlow: "", $important: true) {
+	@if ($important){
+		display: flex !important;
+		display: -webkit-flex !important;
+		display: -ms-flexbox !important;
+		display: -moz-box !important;	
+		display: -o-flex !important;
+	}@else{
+		display: flex;
+		display: -webkit-flex;
+		display: -ms-flexbox;
+		display: -moz-box;	
+		display: -o-flex;
+	}
+
+	@if (str-length($justContent) > 0){
+		justify-content: #{$justContent};
+		-webkit-justify-content: #{$justContent};
+		-ms-justify-content: #{$justContent};
+		-moz-justify-content: #{$justContent};
+		-o-justify-content: #{$justContent};
+	}
+
+    @if (str-length($alignItem) > 0) {
+		align-items: #{$alignItem};
+		-webkit-align-items: #{$alignItem};
+		-ms-align-items: #{$alignItem};
+		-moz-align-items: #{$alignItem};
+		-o-align-items: #{$alignItem};
+    }
+
+    @if (str-length($flexFlow) > 0) {
+		flex-flow: #{$flexFlow};
+		-webkit-flex-flow: #{$flexFlow};
+		-ms-flex-flow: #{$flexFlow};
+		-moz-flex-flow: #{$flexFlow};
+		-o-flex-flow: #{$flexFlow};
+    }
+}
+
+//Barra de progreso según el paso en el que estés
+@mixin progressBar($color, $width:0%) {
+	@include borderRadius(0.5em);
+	width: $width;
+	height: 0.75em;
+	background: map-get($colores, #{$color});
+}
+
+//Campos de texto de formularios
+@mixin campoTexto() {
+	background: #fff;
+	padding: 6px 6px 6px 8px;
+	width: 20%;
+	@include borderRadius(2em);
+	@include cajaSombra(inset, 0 1px 2px, rgba(0,0,0,.2));
+	@include mobilToTablet(){
+		width: 42%;
+	}
+}
+
+//Media querie para tamaños de pantalla entre una tablet y un pc
+@mixin tabletToDesktop() {
+  @media (min-width: #{$tablet-width}) and (max-width: #{$desktop-width}) {
+    @content;
+  }
+}
+
+//Media querie para pantallas desde móviles a tablets
+@mixin mobilToTablet() {
+  @media (max-width: #{$tablet-width}) {
+    @content;
+  }
+}
+
+//Media querie sólo para móviles
+@mixin mobil() {
+  @media (max-width: #{$mobil-width}) {
+    @content;
+  }
+}
+
+//Media querie para tamaños no estándares
+@mixin customMeasures($min-width:0px, $max-width:6000px) {
+	@if ($min-width == 0px){
+		@media (max-width: $max-width) {
+			@content;
+		}
+	}@else if($max-width != 6000px){
+		
+	}@else{
+		@media (min-width: $min-width) and (max-width: $max-width) {
+			@content;
+		}
+	}
+}
+
+/**********************
+ ***** VARIABLES  *****
+ **********************/
+
+$fuentes: Helvetica, Arial, sans-serif;
+$rutaImagenes: "../img/";
+$imgSlider: "epaplus.jpg", "heliocare.jpg", "isdin.jpg", "lajusticia.jpg";
+$tablet-width: 768px;
+$desktop-width: 991px;
+$mobil-width: 419px;
+$colores: (
+	backgroundDeg1: #99CAEB, 
+	backgroundDeg2: #CDE4F6, 
+	logoAzul: #245BA5, 
+	logoAmarillo: #FED41A, 
+	colorTextoAzul: #245ba6,
+	btnPresupuesto: #B35959,
+	sombraPresupuesto: #9B3334,
+	btnLang: #474B4A,
+	sombraLang: #000005,
+	CB1: #C60B1E,
+	CB2: #FFC400
+);
